@@ -5,21 +5,22 @@ import { useState } from 'react'
 interface Props {
   onCreateSession: (name: string) => void
   onJoinSession: (name: string, code: string) => void
+  loading?: boolean
 }
 
-export default function LobbyScreen({ onCreateSession, onJoinSession }: Props) {
+export default function LobbyScreen({ onCreateSession, onJoinSession, loading = false }: Props) {
   const [mode, setMode] = useState<'menu' | 'create' | 'join'>('menu')
   const [playerName, setPlayerName] = useState('')
   const [sessionCode, setSessionCode] = useState('')
 
   const handleCreate = () => {
-    if (playerName.trim()) {
+    if (playerName.trim() && !loading) {
       onCreateSession(playerName)
     }
   }
 
   const handleJoin = () => {
-    if (playerName.trim() && sessionCode.trim()) {
+    if (playerName.trim() && sessionCode.trim() && !loading) {
       onJoinSession(playerName, sessionCode.toUpperCase())
     }
   }
@@ -73,22 +74,25 @@ export default function LobbyScreen({ onCreateSession, onJoinSession }: Props) {
               placeholder="Tu nombre (nick)"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-socialist-red"
+              disabled={loading}
+              className="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-socialist-red disabled:opacity-50"
               maxLength={20}
             />
             <div className="space-y-2">
               <button
                 onClick={handleCreate}
-                className="w-full bg-socialist-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                disabled={loading}
+                className="w-full bg-socialist-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Crear
+                {loading ? 'Creando...' : 'Crear'}
               </button>
               <button
                 onClick={() => {
                   setMode('menu')
                   setPlayerName('')
                 }}
-                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                disabled={loading}
+                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
               >
                 Atrás
               </button>
@@ -106,7 +110,8 @@ export default function LobbyScreen({ onCreateSession, onJoinSession }: Props) {
               placeholder="Tu nombre (nick)"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-radar-blue"
+              disabled={loading}
+              className="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-radar-blue disabled:opacity-50"
               maxLength={20}
             />
             <input
@@ -114,15 +119,17 @@ export default function LobbyScreen({ onCreateSession, onJoinSession }: Props) {
               placeholder="Código de sesión (ej: ABC123)"
               value={sessionCode}
               onChange={(e) => setSessionCode(e.target.value.toUpperCase())}
-              className="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-radar-blue text-center text-2xl letter-spacing-2 font-mono"
+              disabled={loading}
+              className="w-full bg-gray-700 text-white px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-radar-blue text-center text-2xl letter-spacing-2 font-mono disabled:opacity-50"
               maxLength={6}
             />
             <div className="space-y-2">
               <button
                 onClick={handleJoin}
-                className="w-full bg-radar-blue hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+                disabled={loading}
+                className="w-full bg-radar-blue hover:bg-blue-900 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Unirse
+                {loading ? 'Uniéndose...' : 'Unirse'}
               </button>
               <button
                 onClick={() => {
@@ -130,7 +137,8 @@ export default function LobbyScreen({ onCreateSession, onJoinSession }: Props) {
                   setPlayerName('')
                   setSessionCode('')
                 }}
-                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                disabled={loading}
+                className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
               >
                 Atrás
               </button>

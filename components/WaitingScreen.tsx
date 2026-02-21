@@ -5,6 +5,7 @@ interface Props {
   gameData: any
   playerName: string
   onStartGame: () => void
+  loading?: boolean
 }
 
 export default function WaitingScreen({
@@ -12,6 +13,7 @@ export default function WaitingScreen({
   gameData,
   playerName,
   onStartGame,
+  loading = false,
 }: Props) {
   const isHost = gameData?.host === playerName
   const playerCount = gameData?.players?.length || 0
@@ -60,9 +62,10 @@ export default function WaitingScreen({
           {isHost && playerCount >= 2 && (
             <button
               onClick={onStartGame}
-              className="w-full bg-socialist-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition"
+              disabled={loading}
+              className="w-full bg-socialist-red hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              ▶️ Iniciar Juego
+              {loading ? '⏳ Iniciando...' : '▶️ Iniciar Juego'}
             </button>
           )}
 
