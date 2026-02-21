@@ -17,7 +17,10 @@ export default function Home() {
   const [gameData, setGameData] = useState<any>(null)
 
   useEffect(() => {
-    const newSocket = io(undefined, {
+    // Socket.IO con fallback a HTTP long-polling para Vercel
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || ''
+    const newSocket = io(socketUrl, {
+      transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
